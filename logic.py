@@ -49,6 +49,12 @@ class Calculator:
         return monthly_repayments, value_of_loan, total_interest, loan_term
 
 
+class Controller:
+    def __init__(self, model, view):
+        self.model = model
+        self.view = view
+
+
 calc_1 = Calculator(150000, 70, 4.5, 15, 45100)
 print(calc_1.calc_loan_mindeposit())
 print(calc_1.calc_deposit())
