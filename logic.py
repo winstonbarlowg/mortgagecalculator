@@ -5,7 +5,7 @@ from datetime import date, datetime
 from math import isclose
 from decimal import *
 
-from flask import Flask, request
+from flask import Flask, request, render_template
 import requests
 
 
@@ -122,12 +122,21 @@ app = Flask(__name__)
 
 @app.route('/')
 def amortisation_viz():
-    pass
+    return render_template('calculator.html')
 
 
 @app.route('/calculator', methods=['POST'])
 def basic_info():
+    property_price = request.form['propertyPrice']
+    ltv = request.form['inputLtv']
+    interest_rate = request.form['inputInterest']
+    mortgage_term = request.form['mortgageType']
+    deposit = request.form['deposit']
+
+    calc_2 = Calculator(property_price, ltv, interest_rate,
+                        mortgage_term, deposit)
     pass
 
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', port=5000)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, debug=True)
