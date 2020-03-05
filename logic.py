@@ -64,11 +64,9 @@ calc_1 = Calculator(150000, 70, 4.5, 15, 45100)
 
 class AmortisationSchedule:
     def __init__(self):
-        self.interest_monthly = []
-        self.principal_monthly = []
-        self.outstanding_balance = []
+        self
 
-    # calculate interest at a given period 'per'
+        # calculate interest at a given period 'per'
     def interest(self, interest_rate=calc_1.interest, total_terms=calc_1.monthly_repayments()[3],
                  loan_years=calc_1.mortgage_type, principal=calc_1.property_price*(calc_1.ltv/100)):
         per = 150
@@ -126,6 +124,10 @@ app = Flask(__name__)
 def amortisation_viz():
     pass
 
+
+@app.route('/calculator', methods=['POST'])
+def basic_info():
+    pass
 
 # if __name__ == '__main__':
 #     app.run(host='0.0.0.0', port=5000)
