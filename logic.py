@@ -92,16 +92,21 @@ class AmortisationSchedule:
 
         # create pandas dataframe
         df = pd.DataFrame(index=rng, columns=[
-                          'Payment', 'Principal', 'Interest', 'Balance'], dtype='float')
+                          'Payment', 'Principal', 'Interest', 'Balance', 'Cumulative Principal'], dtype='float')
         df.reset_index(inplace=True)
         df.index += 1
         df.index.name = 'Period'
 
+        # values
         df['Payment'] = calc_1.monthly_repayments()[0]
         df['Principal'] = npf.ppmt(
             (interest_rate/100)/12, df.index, total_terms, principal)
         df['Interest'] = npf.ipmt(
             (interest_rate/100)/12, df.index, total_terms, principal)
+        df['Cumulative Principal'] = df['Principal'].cumsum()
+        df['Cumulative Principal'] = df['Cumulative Principal'].clip(
+            lower=-principal)
+        df['Balance'] = principal + df['Cumulative Principal']
 
         df = df.round(2)
 
@@ -113,7 +118,7 @@ print(calc_1.calc_deposit())
 print(calc_1.monthly_repayments())
 print(calc_1.deposit)
 
-# FLASK
+# flask routes to make chart.js visualisations and display templates
 
 app = Flask(__name__)
 
