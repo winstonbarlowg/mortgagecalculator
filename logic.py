@@ -68,6 +68,7 @@ class AmortisationSchedule:
         self.principal_monthly = []
         self.outstanding_balance = []
 
+    # calculate interest at a given period 'per'
     def interest(self, interest_rate=calc_1.interest, total_terms=calc_1.monthly_repayments()[3],
                  loan_years=calc_1.mortgage_type, principal=calc_1.property_price*(calc_1.ltv/100)):
         per = 150
@@ -75,6 +76,7 @@ class AmortisationSchedule:
                         per, total_terms, principal)
         return ipmt
 
+    # calculate principal at a given period 'per'
     def principal(self, interest_rate=calc_1.interest, total_terms=calc_1.monthly_repayments()[3],
                   loan_years=calc_1.mortgage_type, principal=calc_1.property_price*(calc_1.ltv/100)):
         per = 150
@@ -82,22 +84,29 @@ class AmortisationSchedule:
                         per, total_terms, principal)
         return ppmt
 
-    def time_index(self):
+    def amortisation_table(self, interest_rate=calc_1.interest, total_terms=calc_1.monthly_repayments()[3],
+                           principal=calc_1.property_price*(calc_1.ltv/100)):
         rng = pd.date_range(
             start=datetime.date(datetime.now()), periods=calc_1.monthly_repayments()[3], freq='MS')
         rng.name = 'Payment_Date'
 
+        # create pandas dataframe
         df = pd.DataFrame(index=rng, columns=[
-                          'Payment', 'Principal', 'Interest', 'Add1_Principal', 'Balance'], dtype='float')
+                          'Payment', 'Principal', 'Interest', 'Balance'], dtype='float')
         df.reset_index(inplace=True)
         df.index += 1
         df.index.name = 'Period'
 
+        df['Payment'] = calc_1.monthly_repayments()[0]
+        df['Principal'] = npf.ppmt(
+            (interest_rate/100)/12, df.index, total_terms, principal)
+        df['Interest'] = npf.ipmt(
+            (interest_rate/100)/12, df.index, total_terms, principal)
+
+        df = df.round(2)
+
         return df
 
-
-print(AmortisationSchedule().interest())
-print(AmortisationSchedule().principal())
 
 print(calc_1.calc_loan_mindeposit())
 print(calc_1.calc_deposit())
