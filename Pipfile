@@ -14,6 +14,7 @@ beautifulsoup4 = "*"
 requests = "*"
 flask = "*"
 jinja2 = "*"
+numpy-financial = "*"
 
 [requires]
 python_version = "3.7"
