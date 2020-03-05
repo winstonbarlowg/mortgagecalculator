@@ -103,8 +103,7 @@ class AmortisationSchedule:
             (interest_rate/100)/12, df.index, total_terms, principal)
         df['Interest'] = npf.ipmt(
             (interest_rate/100)/12, df.index, total_terms, principal)
-        df['Cumulative Principal'] = df['Principal'].cumsum()
-        df['Cumulative Principal'] = df['Cumulative Principal'].clip(
+        df['Cumulative Principal'] = df['Principal'].cumsum().clip(
             lower=-principal)
         df['Balance'] = principal + df['Cumulative Principal']
 
