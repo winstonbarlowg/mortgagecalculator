@@ -1,5 +1,6 @@
 import numpy as np
 from math import isclose
+from decimal import *
 
 
 class Calculator:
@@ -49,6 +50,27 @@ class Calculator:
         return monthly_repayments, value_of_loan, total_interest, loan_term
 
 
+# amortisation schedule, principal vs interest
+class RepaymentOverview:
+    def __init__(self):
+        self.interest_monthly = []
+        self.principal_monthly = []
+        self.outstanding_balance = []
+
+    def interest(self):
+        loan_term = calc_1.monthly_repayments()[3]
+        # for a in range(1, loan_term+1):
+        #     self.interest_monthly.append()
+        pass
+
+    def principal(self):
+        monthly_principal = np.ppmt()
+        pass
+
+    def balance(self):
+        pass
+
+
 class Controller:
     def __init__(self, model, view):
         self.model = model
@@ -59,3 +81,12 @@ calc_1 = Calculator(150000, 70, 4.5, 15, 45100)
 print(calc_1.calc_loan_mindeposit())
 print(calc_1.calc_deposit())
 print(calc_1.monthly_repayments())
+
+
+# def interest_total():
+#     interest = calc_1.monthly_repayments()[2]
+
+#     return interest
+
+
+# print(interest_total())
