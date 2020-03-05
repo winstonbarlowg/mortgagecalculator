@@ -1,7 +1,7 @@
 import numpy as np
 import numpy_financial as npf
 import pandas as pd
-from datetime import date
+from datetime import date, datetime
 from math import isclose
 from decimal import *
 
@@ -70,23 +70,34 @@ class AmortisationSchedule:
 
     def interest(self, interest_rate=calc_1.interest, total_terms=calc_1.monthly_repayments()[3],
                  loan_years=calc_1.mortgage_type, principal=calc_1.property_price*(calc_1.ltv/100)):
-        per = 1
+        per = 150
         ipmt = npf.ipmt((interest_rate/100) / 12,
                         per, total_terms, principal)
         return ipmt
 
     def principal(self, interest_rate=calc_1.interest, total_terms=calc_1.monthly_repayments()[3],
                   loan_years=calc_1.mortgage_type, principal=calc_1.property_price*(calc_1.ltv/100)):
-        per = 1
+        per = 150
         ppmt = npf.ppmt((interest_rate/100) / 12,
                         per, total_terms, principal)
         return ppmt
 
-    def balance(self):
-        pass
+    def time_index(self):
+        rng = pd.date_range(
+            start=datetime.date(datetime.now()), periods=calc_1.monthly_repayments()[3], freq='MS')
+        rng.name = 'Payment_Date'
+
+        df = pd.DataFrame(index=rng, columns=[
+                          'Payment', 'Principal', 'Interest', 'Add1_Principal', 'Balance'], dtype='float')
+        df.reset_index(inplace=True)
+        df.index += 1
+        df.index.name = 'Period'
+
+        return df
 
 
-print(AmortisationSchedule().interest()+AmortisationSchedule().principal())
+print(AmortisationSchedule().interest())
+print(AmortisationSchedule().principal())
 
 print(calc_1.calc_loan_mindeposit())
 print(calc_1.calc_deposit())
