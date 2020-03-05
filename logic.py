@@ -1,4 +1,7 @@
 import numpy as np
+import numpy_financial as npf
+import pandas as pd
+from datetime import date
 from math import isclose
 from decimal import *
 
@@ -40,53 +43,49 @@ class Calculator:
     def monthly_repayments(self):
         loan_amount = float(self.property_price * (self.ltv / 100))
         loan_term = int(12*self.mortgage_type)
-        monthly_interest = (self.interest * 12)
-        capital_rf = (1 - (1 + self.interest / (12 * 100))**(-loan_term))
-        monthly_repayments = np.round(
-            (self.property_price * (self.ltv / 100)) * ((self.interest / (12 * 100)) / capital_rf), 2)
-        value_of_loan = np.round((monthly_repayments*loan_term), 2)
-        total_interest = np.round((value_of_loan - loan_amount), 2)
 
-        return monthly_repayments, value_of_loan, total_interest, loan_term
+        # use npf for calculating monthly payment
+        monthly_pmt = np.round(npf.pmt(
+            (self.interest/100) / 12, self.mortgage_type * 12, self.property_price*(self.ltv/100)), 2)
 
+        cost_of_loan = np.round((monthly_pmt*loan_term), 2)
+        total_interest_paid = np.round((cost_of_loan - loan_amount), 2)
+
+        return monthly_pmt, cost_of_loan, total_interest_paid, loan_term,
+
+
+calc_1 = Calculator(150000, 70, 4.5, 15, 45100)
 
 # amortisation schedule, principal vs interest
-class RepaymentOverview:
+
+
+class AmortisationSchedule:
     def __init__(self):
         self.interest_monthly = []
         self.principal_monthly = []
         self.outstanding_balance = []
 
-    def interest(self):
-        loan_term = calc_1.monthly_repayments()[3]
-        # for a in range(1, loan_term+1):
-        #     self.interest_monthly.append()
-        pass
+    def interest(self, interest_rate=calc_1.interest, total_terms=calc_1.monthly_repayments()[3],
+                 loan_years=calc_1.mortgage_type, principal=calc_1.property_price*(calc_1.ltv/100)):
+        per = 1
+        ipmt = npf.ipmt((interest_rate/100) / 12,
+                        per, total_terms, principal)
+        return ipmt
 
-    def principal(self):
-        monthly_principal = np.ppmt()
-        pass
+    def principal(self, interest_rate=calc_1.interest, total_terms=calc_1.monthly_repayments()[3],
+                  loan_years=calc_1.mortgage_type, principal=calc_1.property_price*(calc_1.ltv/100)):
+        per = 1
+        ppmt = npf.ppmt((interest_rate/100) / 12,
+                        per, total_terms, principal)
+        return ppmt
 
     def balance(self):
         pass
 
 
-class Controller:
-    def __init__(self, model, view):
-        self.model = model
-        self.view = view
+print(AmortisationSchedule().interest()+AmortisationSchedule().principal())
 
-
-calc_1 = Calculator(150000, 70, 4.5, 15, 45100)
 print(calc_1.calc_loan_mindeposit())
 print(calc_1.calc_deposit())
 print(calc_1.monthly_repayments())
-
-
-# def interest_total():
-#     interest = calc_1.monthly_repayments()[2]
-
-#     return interest
-
-
-# print(interest_total())
+print(calc_1.deposit)
