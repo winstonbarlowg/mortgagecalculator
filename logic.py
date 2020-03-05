@@ -5,6 +5,9 @@ from datetime import date
 from math import isclose
 from decimal import *
 
+from flask import Flask, request
+import requests
+
 
 class Calculator:
     def __init__(self, property_price, ltv, interest, mortgage_type, deposit):
@@ -89,3 +92,16 @@ print(calc_1.calc_loan_mindeposit())
 print(calc_1.calc_deposit())
 print(calc_1.monthly_repayments())
 print(calc_1.deposit)
+
+# FLASK
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def amortisation_viz():
+    pass
+
+
+# if __name__ == '__main__':
+#     app.run(host='0.0.0.0', port=5000)
