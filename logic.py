@@ -91,12 +91,6 @@ class Calculator:
 
 # mock input data for testing calculations
 # calc_1 = Calculator(150000, 70, 4.5, 15, 45100)
-# print(calc_1.amortisation_table())
-
-# print(calc_1.calc_loan_mindeposit())
-# print(calc_1.calc_deposit())
-# print(calc_1.monthly_repayments())
-# print(calc_1.deposit)
 
 # flask routes to get user input, make chart.js visualisations through templates
 app = Flask(__name__)
@@ -107,6 +101,7 @@ def amortisation_viz():
     return render_template('calculator.html')
 
 # TO DO: error handling for user input
+# TO DO 2: send a request to backend for jsonified data
 @app.route('/calculator', methods=['POST'])
 def basic_info():
     property_price = float(request.form['propertyPrice'])
@@ -122,9 +117,10 @@ def basic_info():
 
     # chart.js
     labels = df.index.tolist()
-    values = df['Principal'].tolist()
+    values_principal = df['Principal'].tolist()
+    values_interest = df['Interest'].tolist()
 
-    return render_template('index.html', labels=labels, values=values)
+    return render_template('index.html', labels=labels, values_principal=values_principal, values_interest=values_interest)
 
 
 if __name__ == '__main__':
