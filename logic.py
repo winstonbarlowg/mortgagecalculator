@@ -6,6 +6,7 @@ from math import isclose
 from decimal import *
 
 from flask import Flask, Blueprint, request, render_template
+
 import requests
 
 
@@ -44,7 +45,7 @@ class Calculator:
         if isclose(deposit, min_deposit):
             return True
 
-    def monthly_repayments(self):
+    def basic_overview(self):
         loan_amount = float(self.property_price * (self.ltv / 100))
         loan_term = int(12*self.mortgage_type)
 
@@ -123,7 +124,7 @@ def basic_info():
     labels = df.index.tolist()
     values = df['Principal'].tolist()
 
-    return render_template('index.html', lables=labels, values=values)
+    return render_template('index.html', labels=labels, values=values)
 
 
 if __name__ == '__main__':
