@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href='static/chart.js/dist/Chart.min.css'>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <script src='static/chart.js/dist/Chart.js'></script>
     <script src='static/chart.js/dist/Chart.min.js'></script>
@@ -15,8 +16,8 @@
 
   <body>
     <h1>Hello world</h1>
-    <div>
-      <canvas id="myChart"></canvas>
+ <div>
+    <canvas id="myChart"></canvas>
         <script>
           var ctx = document.getElementById('myChart').getContext('2d');
           var chart = new Chart(ctx, {
@@ -25,12 +26,16 @@
 
               // The data for our dataset
               data: {
-                  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                  labels: [{% for label in labels %}
+                  {{ label }},
+                  {% endfor %}],
                   datasets: [{
                       label: 'My First dataset',
                       backgroundColor: 'rgb(255, 99, 132)',
                       borderColor: 'rgb(255, 99, 132)',
-                      data: [0, 10, 5, 2, 20, 30, 45]
+                      data: [{% for value in values %}
+                      {{ value }},
+                      {% endfor %}]
                   }]
               },
 
@@ -38,7 +43,7 @@
               options: {}
           });
         </script>
-    </div>
+  </div>
   </body>
 
 </html>
