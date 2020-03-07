@@ -89,6 +89,47 @@ class Calculator:
         return df
 
 
+class LendingCriteria:
+    p_allowance = 12500
+
+    def __init__(self, annual_income, monthly_outgoings, country):
+        self.annual_income = annual_income
+        self.country = country
+        self.monthly_outgoings = monthly_outgoings
+
+    # TO DO: fix statements for checking tax rates
+    def tax_rate(self):
+        rate = None
+        if self.country == 'England' or self.country == 'Northern Ireland' or self.country == 'Wales':
+            if self.annual_income <= 37500:
+                rate = 0.2
+            elif self.annual_income >= 37501 and self.annual_income <= 150000:
+                rate = 0.4
+            elif self.annual_income >= 150000:
+                rate = 0.45
+            else:
+                rate = False
+
+        if self.country == 'Scotland':
+            if self.annual_income <= 2049:
+                rate = 0.19
+            elif self.annual_income >= 2050 and self.annual_income <= 12444:
+                rate = 0.2
+            elif self.annual_income >= 12445 and self.annual_income <= 30930:
+                rate = 0.21
+            elif self.annual_income >= 30931 and self.annual_income <= 150000:
+                rate = 0.4
+            elif self.annual_income >= 150000:
+                rate = 0.46
+            else:
+                rate = False
+
+        return rate
+
+    def out_to_inc(self):
+        pass
+
+
 # mock input data for testing calculations
 # calc_1 = Calculator(150000, 70, 4.5, 15, 45100)
 
@@ -97,13 +138,13 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def amortisation_viz():
+def basic_info_form():
     return render_template('calculator.html')
 
 # TO DO: error handling for user input
 # TO DO 2: send a request to backend for jsonified data
 @app.route('/calculator', methods=['POST'])
-def basic_info():
+def amortisation_visualisation():
     property_price = float(request.form['propertyPrice'])
     ltv = float(request.form['inputLtv'])
     interest_rate = float(request.form['inputInterest'])
@@ -123,5 +164,24 @@ def basic_info():
     return render_template('index.html', labels=labels, values_principal=values_principal, values_interest=values_interest)
 
 
+@app.route('/criteria')
+def criteria_info():
+    return render_template('criteria.html')
+
+
+@app.route('/criteria_result', methods=['POST', 'GET'])
+def income_outgoings():
+    annual_income = float(request.form['annualIncome'])
+    monthly_outgoings = float(request.form['outgoingsMonthly'])
+    tax_rate = request.form['tax_class']
+    country_form = request.form['country']
+
+    lending_check = LendingCriteria(
+        annual_income, monthly_outgoings, country_form)
+    tax_calc = lending_check.tax_rate()
+
+    return render_template('criteria_overview.html', annual_income=annual_income, monthly_outgoings=monthly_outgoings, tax_rate=tax_rate, country_form=country_form, lending_check=lending_check.tax_rate())
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, threaded=True, debug=True)
