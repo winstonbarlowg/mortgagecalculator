@@ -1,0 +1,51 @@
+{% extends 'base.html' %}{% block content %}
+<form method="post" action="/criteria_result">
+  <div>
+    <h3>Location</h3>
+    <select id="country" name="country">
+      <option value="England">England</option>
+      <option value="Northern Ireland">Northern Ireland</option>
+      <option value="Scotland">Scotland</option>
+      <option value="Wales">Wales</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <h3>Tell us about your financial situation</h3>
+    <label for="annualIncome">What's your annual pre-tax income? </label>
+    <input
+      type="number"
+      step="0.01"
+      name="annualIncome"
+      id="annualIncome"
+      class="form-control"
+      placeholder="Enter price"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="outgoingsMonthly"
+      >How much are your monthly outgoings on average?
+    </label>
+    <input
+      type="number"
+      step="0.01"
+      name="outgoingsMonthly"
+      class="form-control"
+      id="outgoingsMonthly"
+      placeholder="Enter percentage"
+      required
+    />
+  </div>
+  <div>
+    <h3>Select your tax rate</h3>
+    <select id="tax_class" name="tax_class">
+      <option value="Personal allowance">Personal allowance</option>
+      <option value="Lower rate">Basic rate</option>
+      <option value="Higher rate">Higher rate</option>
+      <option value="Additional rate">Additional rate</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock content %}
