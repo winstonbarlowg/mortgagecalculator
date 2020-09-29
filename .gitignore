@@ -2,3 +2,9 @@
 .vscode
 
 /__pycache__
+
+# files within directory
+mortgage schedule.csv
+mortgage schedule.xlsx
+example.py
+testing_code.py

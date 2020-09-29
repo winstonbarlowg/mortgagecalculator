@@ -9,6 +9,7 @@ class TestLogic(unittest.TestCase):
         result = Calculator(150000, 70, 4.5, 15, 45100).monthly_repayments()
         self.assertEqual(result, 803.24, 144583.2, 39583.2, 180)
 
+# failure because of comparison of floating points
     def test_min_deposit(self):
         result = Calculator(150000, 70, 4.5, 15,
                             45100).calc_loan_mindeposit()

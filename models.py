@@ -5,8 +5,6 @@ from datetime import date, datetime
 from math import isclose
 from decimal import *
 
-from flask import Flask, Blueprint, request, render_template
-
 import requests
 
 
@@ -45,6 +43,7 @@ class Calculator:
         if isclose(deposit, min_deposit):
             return True
 
+    # TO DO: review basic_overview function
     def basic_overview(self):
         loan_amount = float(self.property_price * (self.ltv / 100))
         loan_term = int(12*self.mortgage_type)
@@ -86,10 +85,11 @@ class Calculator:
 
         df = df.round(2)
 
+        # download excel file (?)
         return df
 
 
-class LendingCriteria:
+class IncomeAnalysis:
     p_allowance = 12500
 
     def __init__(self, annual_income, monthly_outgoings, country):
@@ -126,8 +126,27 @@ class LendingCriteria:
 
         return rate
 
-    def out_to_inc(self):
+    # TO DO
+    def inc_out_ratio(self):
         pass
+
+
+# TO DO
+class Dashboard:
+    pass
+
+    def amortisation_schedule(self):
+        pass
+
+    def interest_value_ratio(self):
+        pass
+
+    def rate_fluctuation(self):
+        pass
+
+
+class LendingCriteria:
+    pass
 
 
 # mock input data for testing calculations
