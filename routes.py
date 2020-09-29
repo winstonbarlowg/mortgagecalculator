@@ -14,7 +14,7 @@ def basic_info_form():
     return render_template('calculator.html')
 
 # TO DO 2: send a request to backend for jsonified data
-@app.route('/schedule', methods=['POST'])
+@app.route('/calculator', methods=['POST'])
 def amortisation_visualisation():
     property_price = float(request.form['propertyPrice'])
     ltv = float(request.form['inputLtv'])
