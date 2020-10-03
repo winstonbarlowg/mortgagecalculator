@@ -2,7 +2,7 @@ import requests
 import re
 from bs4 import BeautifulSoup
 
-url = 'https://www.rightmove.co.uk/property-for-sale/property-84814774.html'
+url = 'https://www.rightmove.co.uk/property-for-sale/property-97702235.html'
 
 headers = {
     "User-Agent": 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.16 Safari/537.36'
