@@ -19,4 +19,4 @@ To get the venv running and into its shell:
 ## Current status
 `app.py` contains a script for running the basic calculations from the terminal.
 
-`logic.py` containts the logic for an eventual GUI. 
+`models.py` has the logic used for a basic frontend via Flask, by running `routes.py`.
