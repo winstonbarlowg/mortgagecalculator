@@ -1,6 +1,13 @@
 from models import Calculator, IncomeAnalysis
 
-from flask import Flask, Blueprint, request, render_template, send_file
+from flask import Flask, Blueprint, request, render_template, send_file, redirect, url_for, session, escape
+from flask_login import current_user, logout_user
+from datetime import timedelta
+
+# from flask import current_app as app
+# from .assets import compile_auth_assets
+# from flask_login import login_required
+
 import requests
 
 from openpyxl import Workbook
@@ -10,32 +17,35 @@ import pandas as pd
 import numpy as np
 
 app = Flask(__name__)
+app.secret_key = 'P\xfai\x0c\x91 \xb6g\xa7\x9f\xcc\x01t\xaf\xc4\xe1\xef4\xf8\xf9\xc3\x8a\xeb\xd3\xad\x17\xb2\xd7{+\xfd\x97'
+app.permanent_session_lifetime = timedelta(minutes=15)
 
 
 @app.route('/')
 def basic_info_form():
     return render_template('calculator.html')
 
-# TO DO 2: send a request to backend for jsonifiesd data
-@app.route('/calculator', methods=['POST'])
-def amortisation_visualisation():
-    property_price = float(request.form['propertyPrice'])
-    ltv = float(request.form['inputLtv'])
-    interest_rate = float(request.form['inputInterest'])
-    mortgage_term = float(request.form['mortgageType'])
-    deposit = float(request.form['deposit'])
 
-    calc_1 = Calculator(property_price, ltv, interest_rate,
-                        mortgage_term, deposit)
+@app.route('/calculator', methods=['GET', 'POST'])
+def calculator_data():
+    if request.method == 'POST':
+        session['property_price'] = float(request.form['propertyPrice'])
+        session['ltv'] = float(request.form['inputLtv'])
+        session['interest_rate'] = float(request.form['inputInterest'])
+        session['mortgage_term'] = float(request.form['mortgageType'])
+        session['deposit'] = float(request.form['deposit'])
 
-    df = calc_1.amortisation_table()
+        calc_1 = Calculator(session['property_price'], session['ltv'],
+                            session['interest_rate'], session['mortgage_term'], session['deposit'])
 
-    # chart.js
-    labels = df.index.tolist()
-    values_principal = df['Principal'].tolist()
-    values_interest = df['Interest'].tolist()
+        df = calc_1.amortisation_table()
 
-    return render_template('schedule.html', labels=labels, values_principal=values_principal, values_interest=values_interest)
+        # chart.js data
+        labels = df.index.tolist()
+        values_principal = df['Principal'].tolist()
+        values_interest = df['Interest'].tolist()
+
+        return render_template('schedule.html', labels=labels, values_principal=values_principal, values_interest=values_interest)
 
 
 @app.route('/criteria')
