@@ -1,20 +1,33 @@
 from models import Calculator, IncomeAnalysis
 
-from flask import Flask, Blueprint, request, render_template
+from flask import Flask, Blueprint, request, render_template, send_file
 import requests
+
+from openpyxl import Workbook
+from flask_caching import Cache
 
 import pandas as pd
 import numpy as np
 
+config = {
+    "DEBUG": True,          # some Flask specific configs
+    "CACHE_TYPE": "simple",  # Flask-Caching related configs
+    "CACHE_DEFAULT_TIMEOUT": 300
+}
+
 app = Flask(__name__)
+
+app.config.from_mapping(config)
+cache = Cache(app)
 
 
 @app.route('/')
 def basic_info_form():
     return render_template('calculator.html')
 
-# TO DO 2: send a request to backend for jsonified data
+# TO DO 2: send a request to backend for jsonifiesd data
 @app.route('/calculator', methods=['POST'])
+@cache.cached(timeout=100)
 def amortisation_visualisation():
     property_price = float(request.form['propertyPrice'])
     ltv = float(request.form['inputLtv'])
@@ -32,7 +45,9 @@ def amortisation_visualisation():
     values_principal = df['Principal'].tolist()
     values_interest = df['Interest'].tolist()
 
-    return render_template('schedule.html', labels=labels, values_principal=values_principal, values_interest=values_interest)
+    download_excel = df.to_excel("amortization_schedule.xlsx")
+
+    return render_template('schedule.html', download_excel=download_excel, labels=labels, values_principal=values_principal, values_interest=values_interest)
 
 
 @app.route('/criteria')
