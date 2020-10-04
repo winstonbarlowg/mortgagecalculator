@@ -7,6 +7,8 @@
     <title>Talo</title>
     {% endif %}
 
+    <meta charset="utf-8" />
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="bootstrap/dist/css/bootstrap-select.min.css" />
@@ -23,6 +25,25 @@
       integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
       crossorigin="anonymous"
     ></script>
+
+    <!-- import plugin script -->
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="static/chart.js/dist/Chart.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="static/chart.js/dist/Chart.min.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="static/chart.js/dist/Chart.js"></script>
+    <script src="static/chart.js/dist/Chart.min.js"></script>
   </head>
   <body>
     {% block content %}{% endblock %}

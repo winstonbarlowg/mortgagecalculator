@@ -1,66 +1,55 @@
-<!DOCTYPE html>
-<head>
-    <meta charset="utf-8" />
-    <title>Chart.js Example</title>
-    <!-- import plugin script -->
-    
-    <link rel="stylesheet" type="text/css" href='static/chart.js/dist/Chart.css'>
-    <link rel="stylesheet" type="text/css" href='static/chart.js/dist/Chart.min.css'>
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+{% extends 'base.html'%} {% block content %}
 
-    <script src='static/chart.js/dist/Chart.js'></script>
-    <script src='static/chart.js/dist/Chart.min.js'></script>
-  </head>
+<div class="container">
+  <h1>Principal vs interest</h1>
+  <canvas id="myChart"></canvas>
+  <script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var stackedBar = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
 
-  <body>
-    <h1>Principal vs interest</h1>
- <div>
-    <canvas id="myChart"></canvas>
-        <script>
-          var ctx = document.getElementById('myChart').getContext('2d');
-          var stackedBar = new Chart(ctx, {
-              // The type of chart we want to create
-              type: 'bar',
+        // The data for our dataset
+        data: {
+            labels: [{% for label in labels %}
+            {{ label }},
+            {% endfor %}],
+            datasets: [{
+                    label: 'Principal',
+                    backgroundColor: 'rgb(61, 165, 217)',
+                    borderColor: 'rgb(61, 165, 217)',
+                    data: [{% for value in values_principal %}
+                    {{ value }},
+                    {% endfor %}],
+            },
+                      {
+                        label: 'Interest',
+                        backgroundColor: 'rgb(209, 73, 91)',
+                        borderColor: 'rgb(209, 73, 91)',
+                        data: [{% for value in values_interest %}
+                        {{ value }},
+                        {% endfor %}],
+                      }],
+        },
 
-              // The data for our dataset
-              data: {
-                  labels: [{% for label in labels %}
-                  {{ label }},
-                  {% endfor %}],
-                  datasets: [{
-                          label: 'Principal',
-                          backgroundColor: 'rgb(61, 165, 217)',
-                          borderColor: 'rgb(61, 165, 217)',
-                          data: [{% for value in values_principal %}
-                          {{ value }},
-                          {% endfor %}],
-                  },
-                            {
-                              label: 'Interest',
-                              backgroundColor: 'rgb(209, 73, 91)',
-                              borderColor: 'rgb(209, 73, 91)',
-                              data: [{% for value in values_interest %}
-                              {{ value }},
-                              {% endfor %}],
-                            }],
-              },
+        // Configuration options go here
+        options: {
+          scales: {
+            xAxes: [{
+              stacked: true
+            }],
+            yAxes: [{
+              stacked: true
+            }]
+          }
+        }
+    });
+  </script>
+</div>
+<div class="container">
+  <button type="button" class="btn btn-primary btn-lg btn-block" href="#">
+    Download Excel
+  </button>
+</div>
 
-              // Configuration options go here
-              options: {
-                scales: {
-                  xAxes: [{
-                    stacked: true
-                  }],
-                  yAxes: [{
-                    stacked: true
-                  }]
-                }
-              }
-          });
-        </script>
-  </div>
-  </body>
-
-</html>
+{% endblock content %}
