@@ -17,6 +17,10 @@ jinja2 = "*"
 numpy-financial = "*"
 openpyxl = "*"
 flask-caching = "*"
+flask-session = "*"
+redis = "*"
+sqlalchemy = "*"
+flask-login = "*"
 
 [requires]
 python_version = "3.7"
