@@ -1,0 +1,40 @@
+{% extends 'base.html'%} {% block content %}
+
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="display-4">Talo prototype</h1>
+    <p class="lead">Here you can test some calculations.</p>
+    <hr class="my-4" />
+    <p>Just click on one of the cards below.</p>
+    <p class="lead"></p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Amortization schedule calculator</h5>
+          <p class="card-text">
+            See the details of interest vs capital repayments for a property
+            over time.
+          </p>
+          <a href="/amortization_calculator" class="btn btn-primary">Try it</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Affordability calcualtor</h5>
+          <p class="card-text">
+            Check what you can afford given your salary and other data.
+          </p>
+          <a href="/criteria" class="btn btn-primary">Try it</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
