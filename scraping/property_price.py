@@ -10,6 +10,11 @@ headers = {
 
 # html_content = requests.get(url).text
 
+
+def get_price():
+    pass
+
+
 page = requests.get(url, headers=headers)
 soup = BeautifulSoup(page.content, 'html.parser')
 
