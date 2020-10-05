@@ -11,7 +11,7 @@ from datetime import timedelta
 import requests
 
 from openpyxl import Workbook
-from flask_caching import Cache
+# from flask_caching import Cache
 
 import pandas as pd
 import numpy as np
@@ -22,7 +22,7 @@ app.permanent_session_lifetime = timedelta(minutes=15)
 
 
 @app.route('/')
-def basic_info_form():
+def index():
     return render_template('index.html')
 
 
@@ -73,21 +73,21 @@ def income_outgoings():
     return render_template('criteria_overview.html', annual_income=annual_income, monthly_outgoings=monthly_outgoings, tax_rate=tax_rate, country_form=country_form, lending_check=lending_check.tax_rate())
 
 
-@app.route('/dashboard', methods=['POST'])
-def main():
-    def amortisation_schedule():
-        pass
+# @app.route('/dashboard', methods=['POST'])
+# def main():
+#     def amortisation_schedule():
+#         pass
 
-    def fluctuation_pie():
-        pass
+#     def fluctuation_pie():
+#         pass
 
-    values_schedule = None
-    labels_schedule = None
+#     values_schedule = None
+#     labels_schedule = None
 
-    values_fluc = None
-    labels_fluc = None
+#     values_fluc = None
+#     labels_fluc = None
 
-    return render_template()
+#     return render_template()
 
 
 if __name__ == '__main__':
