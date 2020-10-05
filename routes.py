@@ -17,35 +17,41 @@ import pandas as pd
 import numpy as np
 
 app = Flask(__name__)
-app.secret_key = 'P\xfai\x0c\x91 \xb6g\xa7\x9f\xcc\x01t\xaf\xc4\xe1\xef4\xf8\xf9\xc3\x8a\xeb\xd3\xad\x17\xb2\xd7{+\xfd\x97'
+app.secret_key = b'\xa8\xf0\xb9z\x93g\xdd\xbf\xb8\x97\xa8\x14\xa0\xeb\xc3\xe1\xe2\x98\x8f\xa2Q_\xf0\x06'
 app.permanent_session_lifetime = timedelta(minutes=15)
 
 
 @app.route('/')
 def basic_info_form():
-    return render_template('calculator.html')
+    return render_template('index.html')
 
 
-@app.route('/calculator', methods=['GET', 'POST'])
-def calculator_data():
+@app.route('/amortization_calculator', methods=['GET', 'POST'])
+def store_input():
     if request.method == 'POST':
         session['property_price'] = float(request.form['propertyPrice'])
         session['ltv'] = float(request.form['inputLtv'])
         session['interest_rate'] = float(request.form['inputInterest'])
-        session['mortgage_term'] = float(request.form['mortgageType'])
+        session['mortgage_type'] = int(request.form['mortgageType'])
         session['deposit'] = float(request.form['deposit'])
+        return redirect(url_for('calculator_data'))
+    else:
+        return render_template('calculator.html')
 
-        calc_1 = Calculator(session['property_price'], session['ltv'],
-                            session['interest_rate'], session['mortgage_term'], session['deposit'])
 
-        df = calc_1.amortisation_table()
+@app.route('/amortization', methods=['GET', 'POST'])
+def calculator_data():
+    calc_1 = Calculator(session.get('property_price', None), session.get('ltv', None),
+                        session.get('interest_rate', None), session.get('mortgage_type', None), session.get('deposit', None))
 
-        # chart.js data
-        labels = df.index.tolist()
-        values_principal = df['Principal'].tolist()
-        values_interest = df['Interest'].tolist()
+    df = calc_1.amortisation_table()
 
-        return render_template('schedule.html', labels=labels, values_principal=values_principal, values_interest=values_interest)
+    # chart.js data
+    labels = df.index.tolist()
+    values_principal = df['Principal'].tolist()
+    values_interest = df['Interest'].tolist()
+
+    return render_template('schedule.html', labels=labels, values_principal=values_principal, values_interest=values_interest)
 
 
 @app.route('/criteria')
