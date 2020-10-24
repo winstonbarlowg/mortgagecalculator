@@ -7,7 +7,10 @@
 mortgage schedule.csv
 mortgage schedule.xlsx
 example.py
-testing_code.p
+testing_code.py
+requirements.txt
+config.py
+__init__.py
 
 /bootstrap
 package-lock.json
